@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TodoApi.Models;
 
 namespace TodoApi.Controllers
@@ -102,12 +103,13 @@ namespace TodoApi.Controllers
             {
                 return NotFound();
             }
-            var todoList = await _context.TodoList.FindAsync(id);
+            var todoList = await _context.TodoList.Include(t => t.Items)
+                                                  .FirstOrDefaultAsync(t => t.Id == id);
             if (todoList == null)
             {
                 return NotFound();
             }
-
+            
             _context.TodoList.Remove(todoList);
             await _context.SaveChangesAsync();
 

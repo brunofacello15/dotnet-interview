@@ -4,8 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDbContext<TodoContext>(
         // Use SQL Server
-        // opt.UseSqlServer(builder.Configuration.GetConnectionString("TodoContext"));
-        opt => opt.UseInMemoryDatabase("TodoList")
+        opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("TodoContext"))
+        //opt => opt.UseInMemoryDatabase("TodoList")
     )
     .AddEndpointsApiExplorer()
     .AddControllers();
